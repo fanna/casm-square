@@ -1,2 +1,15 @@
 # casm-square
-C and Assembly square drawing practice
+Drawing colorful squares and rectangles in pure C and Assembly
+
+###Build
+
+```
+make
+```
+
+###Run
+
+```
+./a.out
+```
+
