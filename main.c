@@ -39,8 +39,10 @@ void create_header(HEADER h, FILE *tga)
 
 void color(int r, int g, int b, FILE *tga);
 
-void draw(FILE *tga)
+void draw(int x, int y, int width, int height, int r, int g, int b)
 {
+  FILE *tga;
+
   HEADER header;
 
   header.id_len = 0;
@@ -56,68 +58,31 @@ void draw(FILE *tga)
   header.bpp = 24;
   header.desc= 0x20;
 
+  tga = fopen("picture.tga", "w+");
+
   create_header(header, tga);
 
-  int x;
-  int y;
-  for(x = 0; x < 480; x++)
-    for(y = 0; y < 640; y++)
+  int paint_x;
+  int paint_y;
+  for(paint_x = 0; paint_x < 480; paint_x++)
+    for(paint_y = 0; paint_y < 640; paint_y++)
     {
-      color(0, 255, 255, tga);
+      if(paint_y >= x && paint_y < x + width && paint_x >= y && paint_x < y + height)
+      {
+        color(r, g, b, tga);
+      }
+      else
+      {
+        color(1, 1, 1, tga);
+      }
     }
 
   fclose(tga);
 }
 
-void draw_square(int x, int y, int width, int height, int r, int g, int b,  FILE *tga)
-{
-    for(; x < height; x++)
-      for(; y < width; y++)
-      {
-        color(r, g, b, tga);
-        printf("doing coloring on %d and %d \n", x, y);
-        printf("width %d \n", width);
-        printf("height%d \n", height);
-      }
-}
-
-void animate()
-{
-  int frame_index;
-
-  for(frame_index = 0; frame_index < 2; frame_index++)
-  {
-    FILE *tga;
-
-    HEADER header;
-
-    header.id_len = 0;
-    header.map_type = 0;
-    header.img_type = 2;
-    header.map_first = 0;
-    header.map_len = 0;
-    header.map_entry_size = 0;
-    header.x = 0;
-    header.y = 0;
-    header.width = 640;
-    header.height = 480;
-    header.bpp = 24;
-    header.desc= 0x20;
-
-    char filename[64];
-    sprintf (filename, "anim%d.tga", frame_index);
-    tga = fopen(filename, "wb");
-
-    create_header(header, tga);
-    draw_square(10, 10, 30, 30, 255, 255 ,255, tga);
-
-    fclose(tga);
-  }
-}
-
 int main ()
 {
-  animate();
+  draw(100, 240, 160, 130, 134, 255, 111);
 
   return 0;
 }
