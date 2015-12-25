@@ -37,9 +37,9 @@ void create_header(HEADER h, FILE *tga)
     fputc(h.desc, tga);
 }
 
-void color(int r, int g, int b, FILE *tga);
+void color(int r, int g, int b, int a, FILE *tga);
 
-void draw(int x, int y, int width, int height, int r, int g, int b)
+void draw(int x, int y, int width, int height, int r, int g, int b, int a)
 {
   FILE *tga;
 
@@ -55,7 +55,7 @@ void draw(int x, int y, int width, int height, int r, int g, int b)
   header.y = 0;
   header.width = 640;
   header.height = 480;
-  header.bpp = 24;
+  header.bpp = 32;
   header.desc= 0x20;
 
   tga = fopen("picture.tga", "w+");
@@ -69,11 +69,11 @@ void draw(int x, int y, int width, int height, int r, int g, int b)
     {
       if(paint_y >= x && paint_y < x + width && paint_x >= y && paint_x < y + height)
       {
-        color(r, g, b, tga);
+        color(r, g, b, a, tga);
       }
       else
       {
-        color(1, 1, 1, tga);
+        color(255, 255, 255, 0, tga);
       }
     }
 
@@ -82,7 +82,7 @@ void draw(int x, int y, int width, int height, int r, int g, int b)
 
 int main ()
 {
-  draw(100, 240, 160, 130, 134, 255, 111);
+  draw(100, 240, 160, 130, 134, 255, 111, 255);
 
   return 0;
 }
