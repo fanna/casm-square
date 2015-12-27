@@ -68,6 +68,30 @@ int random_param()
   return random_num;
 }
 
+void merge_two()
+{
+  FILE *picture1, *picture2, *merged_pic;
+  char ch;
+
+  picture1 = fopen("anim0.tga","r");
+  picture2 = fopen("anim1.tga","r");
+  merged_pic = fopen("final.tga","w");
+
+  while( ( ch = fgetc(picture1) ) != EOF )
+  {
+    fputc(ch,merged_pic);
+  }
+
+  while( ( ch = fgetc(picture2) ) != EOF )
+  {
+    fputc(ch,merged_pic);
+  }
+
+  fclose(picture1);
+  fclose(picture2);
+  fclose(merged_pic);
+}
+
 void animate()
 {
   int frame_index;
@@ -113,6 +137,7 @@ void animate()
 int main ()
 {
   animate();
+  merge_two();
 
   return 0;
 }
