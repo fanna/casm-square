@@ -45,10 +45,10 @@ void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, 
 {
   int paint_x;
   int paint_y;
-  for(paint_x = 0; paint_x < 480; paint_x++)
-    for(paint_y = 0; paint_y < 640; paint_y++)
+  for(paint_y = 0; paint_y < 480; paint_y++)
+    for(paint_x = 0; paint_x < 640; paint_x++)
     {
-      if(paint_y >= x && paint_y < x + width && paint_x >= y && paint_x < y + height)
+      if(paint_x >= x && paint_x < x + width && paint_y >= y && paint_y < y + height)
       {
         color(r, g, b, a, tga);
       }
@@ -68,13 +68,37 @@ int random_param()
   return random_num;
 }
 
-void merge_two()
+void duplicate(char *picture_name)
+{
+  FILE *picture, *exported_pic;
+  picture = fopen(picture_name, "r");
+  exported_pic = fopen("dupl.tga", "wb");
+
+  char ch[307200];
+  int i;
+  int j;
+
+  for (i = 0; i < 640; i++)
+    for (j = 0; j < 480; j++)
+    {
+      fscanf(picture, "%c,", &ch[i] );
+      fscanf(picture, "%c,", &ch[j] );
+      fputc(ch[i], exported_pic);
+      fputc(ch[j], exported_pic);
+
+    }
+
+  fclose(picture);
+  fclose(exported_pic);
+}
+
+void merge_two(char *picture_name1, char *picture_name2)
 {
   FILE *picture1, *picture2, *merged_pic;
   char ch;
 
-  picture1 = fopen("anim0.tga","r");
-  picture2 = fopen("anim1.tga","r");
+  picture1 = fopen(picture_name1,"r");
+  picture2 = fopen(picture_name2,"r");
   merged_pic = fopen("final.tga","w");
 
   while( ( ch = fgetc(picture1) ) != EOF )
@@ -137,7 +161,8 @@ void animate()
 int main ()
 {
   animate();
-  merge_two();
+  merge_two("anim1.tga", "anim2.tga");
+  duplicate("anim1.tga");
 
   return 0;
 }
